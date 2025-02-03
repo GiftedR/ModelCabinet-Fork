@@ -66,11 +66,46 @@ namespace ModelCabinet.Server.Data
                 }
             );
 
+            modelBuilder.Entity<Tag>().HasData(
+                new Tag
+                {
+                    TagID = 1,
+                    TagName = "Testing"
+                },
+                new Tag
+                {
+                    TagID = 2,
+                    TagName = "In Development"
+                },
+                new Tag
+                {
+                    TagID = 3,
+                    TagName = "Ready To Print"
+                },
+                new Tag
+                {
+                    TagID = 4,
+                    TagName = "Modular"
+                }
+            );
+
             // auto load any navigation properties using this pattern
             modelBuilder.Entity<Project>().Navigation(p => p.Assets).AutoInclude();
+            modelBuilder.Entity<Project>().Navigation(p => p.ProjectTags).AutoInclude();
+
+            modelBuilder.Entity<Asset>().Navigation(a => a.AssetTags).AutoInclude();
+
+            modelBuilder.Entity<Tag>().HasIndex(t => t.TagName).IsUnique();
+            modelBuilder.Entity<Tag>()
+                .HasMany(t => t.TaggedAssets)
+                .WithMany(t => t.AssetTags);
+            modelBuilder.Entity<Tag>()
+                .HasMany(t => t.TaggedProjects)
+                .WithMany(t => t.ProjectTags);
         }
 
         public DbSet<ModelCabinet.Server.Models.Project> Project { get; set; } = default!;
         public DbSet<ModelCabinet.Server.Models.Asset> Asset { get; set; } = default!;
+        public DbSet<ModelCabinet.Server.Models.Tag> Tag { get; set; } = default!;
     }
 }

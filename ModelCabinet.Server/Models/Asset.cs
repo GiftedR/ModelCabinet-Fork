@@ -12,5 +12,6 @@ namespace ModelCabinet.Server.Models
         public long FileSize { get; set; }
         [ForeignKey("Project")]
         public int ProjectId { get; set; }
+        public virtual ICollection<Tag> AssetTags { get; set; }
     }
 }

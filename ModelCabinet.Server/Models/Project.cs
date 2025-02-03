@@ -12,6 +12,7 @@
         public virtual List<Asset> Assets { get; set; }
         public string Slug { get; set; }
         public string ShortDescription { get; set; }
+        public virtual ICollection<Tag> ProjectTags { get; set; }
 
     }
 }
